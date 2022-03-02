@@ -23,14 +23,17 @@ Route::get('/', function () {
     //Adding a delay:
     //\App\Jobs\SendWelcomeEmail::dispatch()->delay(5);
 
-    foreach (range(1,100) as $i){
+//    foreach (range(1,100) as $i){
         \App\Jobs\SendWelcomeEmail::dispatch();
-    }
+//    }
+
+    // in order to retry a job
+    // php artisan queue:retry UUID
 
     // Setup a special que
     // Run a special que and with priority
     // php artisan queue:work --queue=payments,default
-    \App\Jobs\ProcessPayment::dispatch()->onQueue('payments');
+//    \App\Jobs\ProcessPayment::dispatch()->onQueue('payments');
 
     return view('welcome');
 });

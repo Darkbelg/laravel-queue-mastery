@@ -18,10 +18,14 @@ class SendWelcomeEmail implements ShouldQueue
 
     // How many times to try
     // -1 for infinite
-    public $tries = -1;
+    public $tries = 10;
 
     // Retry after these amount of seconds
-    public $backoff = 2;
+    // exponential backoff so the bigger it gets the longer it waits this uses an array
+//    public $backoff = [2,10 ,20];
+
+    // The amount of times the que can trhow a exception before failing.
+    public  $maxException = 2;
 
     /**
      * Create a new job instance.
@@ -40,14 +44,16 @@ class SendWelcomeEmail implements ShouldQueue
      */
     public function handle()
     {
-//        throw new \Exception('Failed!');
+        throw new \Exception('Failed!');
 
-        sleep(3);
-
-        info('Hello!');
+        return $this->release();
     }
 
-    public function retryUntil(){
-        return now()->addMinute();
+//    public function retryUntil(){
+//        return now()->addMinute();
+//    }
+
+    public function failed($e){
+        info('Failed!!!');
     }
 }
