@@ -14,10 +14,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    // To execute a que
+    // php artisan queue:work
+
     // Call the job directly:
     //(new \App\Jobs\SendWelcomeEmail())->handle();
 
-    \App\Jobs\SendWelcomeEmail::dispatch();
+    //Adding a delay:
+    //\App\Jobs\SendWelcomeEmail::dispatch()->delay(5);
+
+    foreach (range(1,100) as $i){
+        \App\Jobs\SendWelcomeEmail::dispatch();
+    }
+
+    // Setup a special que
+    // Run a special que and with priority
+    // php artisan queue:work --queue=payments,default
+    \App\Jobs\ProcessPayment::dispatch()->onQueue('payments');
 
     return view('welcome');
 });
