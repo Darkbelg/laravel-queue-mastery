@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Bus\Batch;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,15 +48,38 @@ Route::get('/', function () {
 
     // a batch is a series of jobs that can run parallel(Unless sleep command is influencing how it works this is not parallel
     // When a job inside a batch fails the entire job will be cancelled
+    // Can be an array within an array
     $batch = [
         new \App\Jobs\PullRepo('ll1'),
         new \App\Jobs\PullRepo('ll2'),
         new \App\Jobs\PullRepo('ll3'),
     ];
 
-    \Illuminate\Support\Facades\Bus::Batch($batch)
-        ->allowsFailures()
-        ->dispatch();
+//    \Illuminate\Support\Facades\Bus::Batch($batch)
+//        ->allowFailures()
+//        ->catch(function (Batch $batch,$e){
+//            // Code to be executed when the batch fails
+//        })
+//        ->then(function(Batch $batch){
+//            // Code to be executed when the batch succeeds
+//        })
+//        ->finally(function (Batch $batch){
+//            // Code to be always executed
+//        })
+//        ->onQueue('deployments')
+//        ->onConnection('database')
+//        ->dispatch();
+
+    \Illuminate\Support\Facades\Bus::chain([
+        new \App\Jobs\Deploy(),
+        function () {
+        \Illuminate\Support\Facades\Bus::batch([
+            new \App\Jobs\PullRepo('ll1'),
+            new \App\Jobs\PullRepo('ll2'),
+            new \App\Jobs\PullRepo('ll3'),
+        ])->dispatch();
+        }
+    ])->dispatch();
 
     return view('welcome');
 });
