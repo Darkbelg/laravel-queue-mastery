@@ -70,16 +70,18 @@ Route::get('/', function () {
 //        ->onConnection('database')
 //        ->dispatch();
 
-    \Illuminate\Support\Facades\Bus::chain([
-        new \App\Jobs\Deploy(),
-        function () {
-        \Illuminate\Support\Facades\Bus::batch([
-            new \App\Jobs\PullRepo('ll1'),
-            new \App\Jobs\PullRepo('ll2'),
-            new \App\Jobs\PullRepo('ll3'),
-        ])->dispatch();
-        }
-    ])->dispatch();
+//    \Illuminate\Support\Facades\Bus::chain([
+//        new \App\Jobs\Deploy(),
+//        function () {
+//        \Illuminate\Support\Facades\Bus::batch([
+//            new \App\Jobs\PullRepo('ll1'),
+//            new \App\Jobs\PullRepo('ll2'),
+//            new \App\Jobs\PullRepo('ll3'),
+//        ])->dispatch();
+//        }
+//    ])->dispatch();
+
+    \App\Jobs\Deploy::dispatch();
 
     return view('welcome');
 });
