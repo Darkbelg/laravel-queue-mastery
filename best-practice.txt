@@ -1,0 +1,12 @@
+It is best to add afterCommit to dispatching of a job.
+So if the db change works it will dispatch if it doesn't and creates an error it will stop
+This can be done globally by update the queue.php config file
+Prevents a lot of confusing bugs
+
+SerializeModels creates a simple object reference to the object
+
+Watch out for latestcommithash.
+You have to be sure where you place certain getters as state might have been changed between creating the job and dispatching
+Always put data in the constructor
+
+ShouldBeEncrypted interface will encrypt sensitive data.
