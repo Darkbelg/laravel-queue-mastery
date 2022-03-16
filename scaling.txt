@@ -1,0 +1,2 @@
+To make a queue stop when empty you can add a flag --stop-when-empty
+You should use this together with a cron who launches workers every 10 minutes

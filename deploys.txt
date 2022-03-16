@@ -1,0 +1,10 @@
+Supervisors
+
+php artisan queue:restart -->
+Restarts the worker if it doesn't have any jobs.
+Be careful if it is accessing the database during a deployment the job might fail if there is a migration.
+So we have to use the stop command and then deploy
+
+sudo supervisorctl stop worker-123123:*
+Deployment
+sudo supervisorctl start worker-123123:*
