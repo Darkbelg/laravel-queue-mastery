@@ -1,0 +1,6 @@
+Is is adviced to add $deleteWhenMissingModels and set to true. If ones the job fails it should not be added to the failure que because you don't want it to run again or because it won't do with it is supposed to do by running again.
+
+
+queue.php config
+retry_after should always be greater than the timeout of any job
+after commit should be used when a jobs has to interact with the database after another process is done.
